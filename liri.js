@@ -16,18 +16,39 @@ function whatToDo(what, info){
     if(what === "my-tweet"){
     
     }else if(what === "spotify-this-song"){
-        lookSong(info);
+        var songName = inputOrNot(info, 2)
+        lookSong(songName);
     
     }else if(what === "movie-this"){
-        inputOrNot(info);
+        var movieName = inputOrNot(info, 3);
+        movieInfo(movieName);
     
     }else if(what === "do-what-it-says"){
         doFile();
     }
 }
 
+function inputOrNot(info , num){
+    var movieName = "";
+    var word = process.argv.length;
+    if(process.argv[3]){
+        for(var i = 3; i < word; i++){
+            movieName += "+" + process.argv[i];
+        }
+    }else if(info){
+        movieName = info;
+    }else{
+        if(num === 2){
+            movieName = "The Sign"
+        }else{
+            movieName = "Mr.Nobody"
+        }
+    }
+    return movieName;
+}
+
 function lookSong(song){
-    spotify.search({ type: "track", query: "Motorsport", limit: 1}, function(err, data) {
+    spotify.search({ type: "track", query: song, limit: 1}, function(err, data) {
         if(err){
             return console.log("ERROR OCCIRRED: " + err);
         }
@@ -39,21 +60,6 @@ function lookSong(song){
         console.log("Link: " + data.tracks.items[0].external_urls.spotify);
         console.log("Album: " + data.tracks.items[0].album.name);
     })
-}
-
-function inputOrNot(info){
-    var movieName = "";
-        var word = process.argv.length;
-        if(process.argv[3]){
-            for(var i = 3; i < word; i++){
-                movieName += "+" + process.argv[i];
-            }
-        }else if(info){
-            movieName = info;
-        }else{
-            movieName = "Mr.Nobody"
-        }
-        movieInfo(movieName);
 }
 
 function movieInfo(movieName){
