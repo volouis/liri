@@ -3,9 +3,11 @@ require("dotenv").config();
 let keys = require("./keys.js");
 var request = require("request");
 var fs = require("fs");
+var Spotify = require('node-spotify-api');
+var Twitter = require('twitter');
 
 var spotify = new Spotify(keys.spotify);
-// var client = new Twitter(keys.twitter);
+var client = new Twitter(keys.twitter);
 
 var doWhat = process.argv[2];
 whatToDo(doWhat);
@@ -14,6 +16,7 @@ function whatToDo(what, info){
     if(what === "my-tweet"){
     
     }else if(what === "spotify-this-song"){
+        lookSong(info);
     
     }else if(what === "movie-this"){
         inputOrNot(info);
@@ -21,6 +24,21 @@ function whatToDo(what, info){
     }else if(what === "do-what-it-says"){
         doFile();
     }
+}
+
+function lookSong(song){
+    spotify.search({ type: "track", query: "Motorsport", limit: 1}, function(err, data) {
+        if(err){
+            return console.log("ERROR OCCIRRED: " + err);
+        }
+
+        for(var i = 0; i < data.tracks.items[0].artists.length; i++){
+            console.log("Artist(s): " + data.tracks.items[0].artists[i].name);
+        }
+        console.log("Song's name: " + data.tracks.items[0].name);
+        console.log("Link: " + data.tracks.items[0].external_urls.spotify);
+        console.log("Album: " + data.tracks.items[0].album.name);
+    })
 }
 
 function inputOrNot(info){
