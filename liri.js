@@ -59,6 +59,7 @@ function lookSong(song){
         console.log("Song's name: " + data.tracks.items[0].name);
         console.log("Link: " + data.tracks.items[0].external_urls.spotify);
         console.log("Album: " + data.tracks.items[0].album.name);
+        outputFile(data, 1);
     })
 }
 
@@ -76,6 +77,7 @@ function movieInfo(movieName){
         console.log("Language: " + movie.Language);
         console.log("Plot: " + movie.Plot);
         console.log("Actors: " + movie.Actors);
+        outputFile(movie, 2);
     });
 }
 
@@ -85,4 +87,55 @@ function doFile(){
         var task = data.split(",")
         whatToDo(task[0], task[1]);
     })
+}
+
+function outputFile(info, num){
+    if(num === 0){
+
+    }else if(num === 1){
+        for(var i = 0; i < info.tracks.items[0].artists.length; i++){
+            fs.appendFile("log.txt", "\nArtist(s): " + info.tracks.items[0].artists[i].name, "utf8", (err) => {
+                if(err) throw err; 
+            });
+        }
+
+        fs.appendFile("log.txt", "\nSong's name: " + info.tracks.items[0].name , "utf8", (err) => {
+            if(err) throw err; 
+        });
+        fs.appendFile("log.txt", "\nLink: " + info.tracks.items[0].external_urls.spotify , "utf8", (err) => {
+            if(err) throw err; 
+        });
+        fs.appendFile("log.txt", "\nAlbum: " + info.tracks.items[0].album.name, "utf8", (err) => {
+            if(err) throw err; 
+        });
+
+    }else if(num === 2){
+        fs.appendFile("log.txt", "\nTitle: " + info.Title , "utf8", (err) => {
+            if(err) throw err; 
+        });
+        fs.appendFile("log.txt", "\nYear: " + info.Year , "utf8", (err) => {
+            if(err) throw err; 
+        });
+        fs.appendFile("log.txt", "\nIMDB Rating: " + info.imdbRating , "utf8", (err) => {
+            if(err) throw err; 
+        });
+        fs.appendFile("log.txt", "\nRotten Tomatoes Rating: " + info.Ratings[1].Value , "utf8", (err) => {
+            if(err) throw err; 
+        });
+        fs.appendFile("log.txt", "\nCountry Origin: " + info.Country , "utf8", (err) => {
+            if(err) throw err; 
+        });
+        fs.appendFile("log.txt", "\nLanguage: " + info.Language , "utf8", (err) => {
+            if(err) throw err; 
+        });
+        fs.appendFile("log.txt", "\nPlot: " + info.Plot , "utf8", (err) => {
+            if(err) throw err; 
+        });
+        fs.appendFile("log.txt", "\nActors: " + info.Actors , "utf8", (err) => {
+            if(err) throw err; 
+        });
+    }
+    fs.appendFile("log.txt", "\n", (err) => {
+        if(err) throw err; 
+    });
 }
