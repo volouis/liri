@@ -14,6 +14,7 @@ whatToDo(doWhat);
 
 function whatToDo(what, info){
     if(what === "my-tweet"){
+        getTweets();
     
     }else if(what === "spotify-this-song"){
         var songName = inputOrNot(info, 2)
@@ -26,6 +27,25 @@ function whatToDo(what, info){
     }else if(what === "do-what-it-says"){
         doFile();
     }
+}
+
+function getTweets(){
+    client.get('statuses/user_timeline', function(error, tweets, response) {
+        if(error) throw error;
+
+        if(20 < tweets.length){
+            var limit = 20;
+        }else{
+            var limit = tweets.length;
+        }
+
+        for(var i = 0; i < limit; i++){
+            console.log(tweets[i].text);
+            console.log(tweets[i].created_at);
+            outputFile(tweets[i], 0)
+        }
+
+      });
 }
 
 function inputOrNot(info , num){
@@ -91,7 +111,13 @@ function doFile(){
 
 function outputFile(info, num){
     if(num === 0){
-
+        fs.appendFile("log.txt", "\ntweet: " + info.created_at, "utf8", (err) => {
+            if(err) throw err; 
+        });
+        fs.appendFile("log.txt", "\ntime: " + info.text, "utf8", (err) => {
+            if(err) throw err; 
+        });
+        
     }else if(num === 1){
         for(var i = 0; i < info.tracks.items[0].artists.length; i++){
             fs.appendFile("log.txt", "\nArtist(s): " + info.tracks.items[0].artists[i].name, "utf8", (err) => {
