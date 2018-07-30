@@ -1,4 +1,4 @@
-require("dotenv").config();
+let dotenv = require("dotenv").config();
 
 let keys = require("./keys.js");
 var request = require("request");
@@ -117,7 +117,7 @@ function outputFile(info, num){
         fs.appendFile("log.txt", "\ntime: " + info.text, "utf8", (err) => {
             if(err) throw err; 
         });
-        
+
     }else if(num === 1){
         for(var i = 0; i < info.tracks.items[0].artists.length; i++){
             fs.appendFile("log.txt", "\nArtist(s): " + info.tracks.items[0].artists[i].name, "utf8", (err) => {
